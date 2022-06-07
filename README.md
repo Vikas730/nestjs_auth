@@ -39,7 +39,6 @@ This app uses <strong>refresh-Token</strong> mechanism to refresh jsonwebtoken a
 
 Visit http://127.0.0.1:8000/api in your browser
 
-This example repo uses the NestJS swagger module for API documentation. [NestJS Swagger](https://github.com/nestjs/swagger) - [www.swagger.io](https://swagger.io/)
 
 ## Authors
 
