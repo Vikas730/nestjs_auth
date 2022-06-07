@@ -11,7 +11,7 @@
 
 Clone the repository
 
-    git clone 
+    git clone https://github.com/Vikas730/nestjs_auth.git
 
 Switch to the repo folder
 
