@@ -3,7 +3,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateForgotPasswordDto {
     @ApiModelProperty({
-      example: 'pejman@gmail.com',
+      example: 'test@gmail.com',
       description: 'The email of the User',
       format: 'email',
       uniqueItems: true,

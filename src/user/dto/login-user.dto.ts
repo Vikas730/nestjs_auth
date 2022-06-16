@@ -4,7 +4,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 export class LoginUserDto {
 
     @ApiModelProperty({
-      example: 'pejman@gmail.com',
+      example: 'test@gmail.com',
       description: 'The email of the User',
       format: 'email',
       uniqueItems: true,
@@ -19,7 +19,7 @@ export class LoginUserDto {
     readonly email: string;
 
     @ApiModelProperty({
-      example: 'secret password change me!',
+      example: 'your secret password',
       description: 'The password of the User',
       format: 'string',
       minLength: 5,

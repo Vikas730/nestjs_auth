@@ -5,7 +5,7 @@ export class CreateUserDto {
 
     // fullName
     @ApiModelProperty({
-      example: 'pejman hadavi',
+      example: 'Tester test',
       description: 'The name of the User',
       format: 'string',
       minLength: 6,
@@ -19,7 +19,7 @@ export class CreateUserDto {
 
     // Email
     @ApiModelProperty({
-      example: 'pejman@gmail.com',
+      example: 'test@gmail.com',
       description: 'The email of the User',
       format: 'email',
       uniqueItems: true,
@@ -35,7 +35,7 @@ export class CreateUserDto {
 
     // Password
     @ApiModelProperty({
-      example: 'secret password change me!',
+      example: 'your secret password',
       description: 'The password of the User',
       format: 'string',
       minLength: 5,
