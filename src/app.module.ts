@@ -6,8 +6,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost:27017', {
-    dbName: 'nest_db1',}), UserModule, AuthModule, ArticleModule],
+  imports: [MongooseModule.forRoot(process.env.MONGODB_URL, {
+    dbName: process.env.MONGO_DB_NAME,}), UserModule, AuthModule, ArticleModule],
   controllers: [AppController],
   providers: [AppService],
 })

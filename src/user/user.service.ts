@@ -28,9 +28,7 @@ export class UserService {
         private readonly authService: AuthService,
         ) {}
 
-    // ┌─┐┬─┐┌─┐┌─┐┌┬┐┌─┐  ┬ ┬┌─┐┌─┐┬─┐
-    // │  ├┬┘├┤ ├─┤ │ ├┤   │ │└─┐├┤ ├┬┘
-    // └─┘┴└─└─┘┴ ┴ ┴ └─┘  └─┘└─┘└─┘┴└─
+    // create user
     async create(createUserDto: CreateUserDto): Promise<User> {
         const user = new this.userModel(createUserDto);
         await this.isEmailUnique(user.email);
@@ -39,9 +37,7 @@ export class UserService {
         return this.buildRegistrationInfo(user);
     }
 
-    // ┬  ┬┌─┐┬─┐┬┌─┐┬ ┬  ┌─┐┌┬┐┌─┐┬┬
-    // └┐┌┘├┤ ├┬┘│├┤ └┬┘  ├┤ │││├─┤││
-    //  └┘ └─┘┴└─┴└   ┴   └─┘┴ ┴┴ ┴┴┴─┘
+    //veryfy email
     async verifyEmail(req: Request, verifyUuidDto: VerifyUuidDto) {
         const user = await this.findByVerification(verifyUuidDto.verification);
         await this.setUserAsVerified(user);
@@ -53,9 +49,7 @@ export class UserService {
         };
     }
 
-    // ┬  ┌─┐┌─┐┬┌┐┌
-    // │  │ ││ ┬││││
-    // ┴─┘└─┘└─┘┴┘└┘
+    //login
     async login(req: Request, loginUserDto: LoginUserDto) {
         const verify = await this.varifiedUser(loginUserDto.email);
         const user = await this.findUserByEmail(loginUserDto.email);
@@ -70,9 +64,7 @@ export class UserService {
         };
     }
 
-    // ┬─┐┌─┐┌─┐┬─┐┌─┐┌─┐┬ ┬  ┌─┐┌─┐┌─┐┌─┐┌─┐┌─┐  ┌┬┐┌─┐┬┌─┌─┐┌┐┌
-    // ├┬┘├┤ ├┤ ├┬┘├┤ └─┐├─┤  ├─┤│  │  ├┤ └─┐└─┐   │ │ │├┴┐├┤ │││
-    // ┴└─└─┘└  ┴└─└─┘└─┘┴ ┴  ┴ ┴└─┘└─┘└─┘└─┘└─┘   ┴ └─┘┴ ┴└─┘┘└┘
+   // Referesh token
     async refreshAccessToken(refreshAccessTokenDto: RefreshAccessTokenDto) {
         const userId = await this.authService.findRefreshToken(refreshAccessTokenDto.refreshToken);
         const user = await this.userModel.findById(userId);
@@ -84,9 +76,7 @@ export class UserService {
         };
     }
 
-    // ┌─┐┌─┐┬─┐┌─┐┌─┐┌┬┐  ┌─┐┌─┐┌─┐┌─┐┬ ┬┌─┐┬─┐┌┬┐
-    // ├┤ │ │├┬┘│ ┬│ │ │   ├─┘├─┤└─┐└─┐││││ │├┬┘ ││
-    // └  └─┘┴└─└─┘└─┘ ┴   ┴  ┴ ┴└─┘└─┘└┴┘└─┘┴└──┴┘
+    // Forgot password
     async forgotPassword(req: Request, createForgotPasswordDto: CreateForgotPasswordDto) {
         await this.findByEmail(createForgotPasswordDto.email);
         await this.saveForgotPassword(req, createForgotPasswordDto);
@@ -96,9 +86,7 @@ export class UserService {
         };
     }
 
-    // ┌─┐┌─┐┬─┐┌─┐┌─┐┌┬┐  ┌─┐┌─┐┌─┐┌─┐┬ ┬┌─┐┬─┐┌┬┐  ┬  ┬┌─┐┬─┐┬┌─┐┬ ┬
-    // ├┤ │ │├┬┘│ ┬│ │ │   ├─┘├─┤└─┐└─┐││││ │├┬┘ ││  └┐┌┘├┤ ├┬┘│├┤ └┬┘
-    // └  └─┘┴└─└─┘└─┘ ┴   ┴  ┴ ┴└─┘└─┘└┴┘└─┘┴└──┴┘   └┘ └─┘┴└─┴└   ┴
+    // Forgot password verify
     async forgotPasswordVerify(req: Request, verifyUuidDto: VerifyUuidDto) {
         const forgotPassword = await this.findForgotPasswordByUuid(verifyUuidDto);
         await this.setForgotPasswordFirstUsed(req, forgotPassword);
@@ -108,9 +96,7 @@ export class UserService {
         };
     }
 
-    // ┬─┐┌─┐┌─┐┌─┐┌┬┐  ┌─┐┌─┐┌─┐┌─┐┬ ┬┌─┐┬─┐┌┬┐
-    // ├┬┘├┤ └─┐├┤  │   ├─┘├─┤└─┐└─┐││││ │├┬┘ ││
-    // ┴└─└─┘└─┘└─┘ ┴   ┴  ┴ ┴└─┘└─┘└┴┘└─┘┴└──┴┘
+    // Reset password
     async resetPassword(resetPasswordDto: ResetPasswordDto) {
         const forgotPassword = await this.findForgotPasswordByEmail(resetPasswordDto);
         await this.setForgotPasswordFinalUsed(forgotPassword);
@@ -120,19 +106,17 @@ export class UserService {
             message: 'password successfully changed.',
         };
     }
-    // ┌─┐┬─┐┌┬┐┌─┐┌─┐┌┬┐┌─┐┌┬┐  ┌─┐┌─┐┬─┐┬  ┬┬┌─┐┌─┐
-    // ├─┘├┬┘ │ ├┤ │   │ ├┤  ││  └─┐├┤ ├┬┘└┐┌┘││  ├┤
-    // ┴  ┴└─ ┴ └─┘└─┘ ┴ └─┘─┴┘  └─┘└─┘┴└─ └┘ ┴└─┘└─┘
+   
+    // protected service
     findAll(): any {
         return {hello: 'world'};
       }
 
-    // ********************************************
-    // ╔═╗╦═╗╦╦  ╦╔═╗╔╦╗╔═╗  ╔╦╗╔═╗╔╦╗╦ ╦╔═╗╔╦╗╔═╗
-    // ╠═╝╠╦╝║╚╗╔╝╠═╣ ║ ║╣   ║║║║╣  ║ ╠═╣║ ║ ║║╚═╗
-    // ╩  ╩╚═╩ ╚╝ ╩ ╩ ╩ ╚═╝  ╩ ╩╚═╝ ╩ ╩ ╩╚═╝═╩╝╚═╝
-    // ********************************************
+    /**
+     * Private methods for users
+     */
 
+    // Check email is unique
     private async isEmailUnique(email: string) {
         const user = await this.userModel.findOne({email});
         if (user) {
@@ -140,11 +124,13 @@ export class UserService {
         }
     }
 
+    // Set registration info
     private setRegistrationInfo(user): any {
         user.verification = v4();
         user.verificationExpires = addHours(new Date(), this.HOURS_TO_VERIFY);
     }
 
+    // Build registration info
     private buildRegistrationInfo(user): any {
         const userRegistrationInfo = {
             fullName: user.fullName,
@@ -154,6 +140,7 @@ export class UserService {
         return userRegistrationInfo;
     }
 
+    // find a user by its uuid
     private async findByVerification(verification: string): Promise<User> {
         const user = await this.userModel.findOne({verification, verified: false, verificationExpires: {$gt: new Date()}});
         if (!user) {
@@ -162,6 +149,7 @@ export class UserService {
         return user;
     }
 
+    // find a user by email
     private async findByEmail(email: string): Promise<User> {
         const user = await this.userModel.findOne({email, verified: true});
         if (!user) {
@@ -170,11 +158,13 @@ export class UserService {
         return user;
     }
 
+    // set a user as verified
     private async setUserAsVerified(user) {
         user.verified = true;
         await user.save();
     }
 
+    // verify a user by its email
     private async varifiedUser(email: string): Promise<User> {
         const user = await this.userModel.findOne({email, verified: true});
         if (!user) {
@@ -182,7 +172,8 @@ export class UserService {
         }
         return user;
       }
-
+    
+    // find a user by its email
     private async findUserByEmail(email: string): Promise<User> {
         const user = await this.userModel.findOne({email, verified: true});
         if (!user) {
@@ -191,6 +182,7 @@ export class UserService {
         return user;
       }
 
+    // check user password  
     private async checkPassword(attemptPass: string, user) {
         const match = await bcrypt.compare(attemptPass, user.password);
         if (!match) {
@@ -200,12 +192,14 @@ export class UserService {
         return match;
       }
 
+    // check user is blocked  
     private isUserBlocked(user) {
         if (user.blockExpires > Date.now()) {
             throw new ConflictException('User has been blocked try later.');
         }
     }
 
+    // check user attampts
     private async passwordsDoNotMatch(user) {
         user.loginAttempts += 1;
         await user.save();
@@ -215,16 +209,19 @@ export class UserService {
         }
     }
 
+    // block a user
     private async blockUser(user) {
         user.blockExpires = addHours(new Date(), this.HOURS_TO_BLOCK);
         await user.save();
     }
 
+    // password matched 
     private async passwordsAreMatch(user) {
         user.loginAttempts = 0 ;
         await user.save();
     }
 
+    // save forgot password
     private async saveForgotPassword(req: Request, createForgotPasswordDto: CreateForgotPasswordDto) {
         const forgotPassword = await this.forgotPasswordModel.create({
             email: createForgotPasswordDto.email,
@@ -237,6 +234,7 @@ export class UserService {
         await forgotPassword.save();
     }
 
+    //find user for forgot password by uuid
     private async findForgotPasswordByUuid(verifyUuidDto: VerifyUuidDto): Promise<ForgotPassword> {
         const forgotPassword = await this.forgotPasswordModel.findOne({
             verification: verifyUuidDto.verification,
@@ -258,6 +256,7 @@ export class UserService {
         await forgotPassword.save();
     }
 
+    // find user for forgot password by email
     private async findForgotPasswordByEmail(resetPasswordDto: ResetPasswordDto): Promise<ForgotPassword> {
         const forgotPassword = await this.forgotPasswordModel.findOne({
             email: resetPasswordDto.email,
@@ -276,6 +275,7 @@ export class UserService {
         await forgotPassword.save();
     }
 
+    // reset user password
     private async resetUserPassword(resetPasswordDto: ResetPasswordDto) {
         const user = await this.userModel.findOne({
             email: resetPasswordDto.email,

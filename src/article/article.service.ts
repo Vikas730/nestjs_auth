@@ -11,9 +11,7 @@ export class ArticleService {
         @InjectModel('Article') private readonly articleModel: Model<Article>,
     ) { }
 
-    // ┌─┐┬─┐┌─┐┌─┐┌┬┐┌─┐  ┌─┐┬─┐┌┬┐┬┌─┐┬  ┌─┐
-    // │  ├┬┘├┤ ├─┤ │ ├┤   ├─┤├┬┘ │ ││  │  ├┤ 
-    // └─┘┴└─└─┘┴ ┴ ┴ └─┘  ┴ ┴┴└─ ┴ ┴└─┘┴─┘└─┘
+    // create Article
 
     async createArticle(createArticleDto: CreateArticleDto): Promise<Article> {
         const article = new this.articleModel(createArticleDto);
@@ -21,30 +19,22 @@ export class ArticleService {
         return article;
     }
 
-    // ┌─┐┌─┐┌┬┐  ┌─┐┬  ┬    ┌─┐┬─┐┌┬┐┬┌─┐┬  ┌─┐┌─┐
-    // │ ┬├┤  │   ├─┤│  │    ├─┤├┬┘ │ ││  │  ├┤ └─┐
-    // └─┘└─┘ ┴   ┴ ┴┴─┘┴─┘  ┴ ┴┴└─ ┴ ┴└─┘┴─┘└─┘└─┘
+    // get all article
     async getAllArticles(): Promise<any> {
         return await this.articleModel.find({});
     }
 
-    // ┌─┐┌─┐┌┬┐  ┌─┐┌┐┌┌─┐  ┌─┐┬─┐┌┬┐┬┌─┐┬  ┌─┐
-    // │ ┬├┤  │   │ ││││├┤   ├─┤├┬┘ │ ││  │  ├┤ 
-    // └─┘└─┘ ┴   └─┘┘└┘└─┘  ┴ ┴┴└─ ┴ ┴└─┘┴─┘└─┘
+    // get one article
     async getOneArticle(id: string): Promise<Article> {
         return await this.articleModel.findById(id);
     }
 
-    // ┬ ┬┌─┐┌┬┐┌─┐┌┬┐┌─┐  ┌─┐┬─┐┌┬┐┬┌─┐┬  ┌─┐    ┌─┐┬  ┬    ┌─┐┌─┐┬─┐┌─┐┌┬┐┌─┐  
-    // │ │├─┘ ││├─┤ │ ├┤   ├─┤├┬┘ │ ││  │  ├┤     ├─┤│  │    ├─┘├─┤├┬┘├─┤│││└─┐  
-    // └─┘┴  ─┴┘┴ ┴ ┴ └─┘  ┴ ┴┴└─ ┴ ┴└─┘┴─┘└─┘    ┴ ┴┴─┘┴─┘  ┴  ┴ ┴┴└─┴ ┴┴ ┴└─┘  \
+    //update article  by id
     async updateArticlePut(id: string, createArticleDto: CreateArticleDto): Promise<Article> {
         return await this.articleModel.updateOne({_id: id}, createArticleDto);
     }
 
-    // ┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐  ┌─┐┌┐┌┌─┐  ┌─┐┬─┐┌┬┐┬┌─┐┬  ┌─┐
-    //  ││├┤ │  ├┤  │ ├┤   │ ││││├┤   ├─┤├┬┘ │ ││  │  ├┤ 
-    // ─┴┘└─┘┴─┘└─┘ ┴ └─┘  └─┘┘└┘└─┘  ┴ ┴┴└─ ┴ ┴└─┘┴─┘└─┘
+   // delete article by id
     async deleteArticle(id: string): Promise<Article> {
         return await this.articleModel.findByIdAndDelete(id);
     }

@@ -27,9 +27,7 @@ export class UserController {
         private readonly userService: UserService,
         ) {}
 
-    // ╔═╗╦ ╦╔╦╗╦ ╦╔═╗╔╗╔╔╦╗╦╔═╗╔═╗╔╦╗╔═╗
-    // ╠═╣║ ║ ║ ╠═╣║╣ ║║║ ║ ║║  ╠═╣ ║ ║╣
-    // ╩ ╩╚═╝ ╩ ╩ ╩╚═╝╝╚╝ ╩ ╩╚═╝╩ ╩ ╩ ╚═╝
+    // Authenticate
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({title: 'Register user',})

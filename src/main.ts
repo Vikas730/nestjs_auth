@@ -10,16 +10,12 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ╦ ╦╔═╗╔═╗  ╔═╗╦  ╔═╗╔╗ ╔═╗╦    ╔═╗╦╔═╗╔═╗╔═╗
-  // ║ ║╚═╗║╣   ║ ╦║  ║ ║╠╩╗╠═╣║    ╠═╝║╠═╝║╣ ╚═╗
-  // ╚═╝╚═╝╚═╝  ╚═╝╩═╝╚═╝╚═╝╩ ╩╩═╝  ╩  ╩╩  ╚═╝╚═╝
+  // use global pipes
   app.useGlobalPipes(new ValidationPipe({
     // disableErrorMessages: true,
   }));
 
-  // ╔═╗╦ ╦╔═╗╔═╗╔═╗╔═╗╦═╗
-  // ╚═╗║║║╠═╣║ ╦║ ╦║╣ ╠╦╝
-  // ╚═╝╚╩╝╩ ╩╚═╝╚═╝╚═╝╩╚═
+  // swagger
   const options = new DocumentBuilder()
     .setTitle('API')
     .setDescription('API description')
@@ -34,9 +30,7 @@ async function bootstrap() {
   });
   SwaggerModule.setup('api', app, document);
 
-  // ╔╦╗╔═╗╔═╗╦╔╗╔╔═╗  ╔═╗╔╗╔╔╦╗  ╦  ╦╔═╗╔╦╗╔═╗╔╗╔  ╔╦╗╔═╗  ╔═╗╔═╗╦═╗╔╦╗
-  // ║║║╣ ╠╣ ║║║║║╣    ╠═╣║║║ ║║  ║  ║╚═╗ ║ ║╣ ║║║   ║ ║ ║  ╠═╝║ ║╠╦╝ ║
-  // ═╩╝╚═╝╚  ╩╝╚╝╚═╝  ╩ ╩╝╚╝═╩╝  ╩═╝╩╚═╝ ╩ ╚═╝╝╚╝   ╩ ╚═╝  ╩  ╚═╝╩╚═ ╩
+  // liseten to port
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
   warn(`APP IS LISTENING TO PORT ${PORT}`);
