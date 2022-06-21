@@ -2,7 +2,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { Request } from 'express';
 import { AuthService } from './../auth/auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
-import { Injectable, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, ConflictException, Inject, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 } from 'uuid';
@@ -14,6 +14,7 @@ import { VerifyUuidDto } from './dto/verify-uuid.dto';
 import { RefreshAccessTokenDto } from './dto/refresh-access-token.dto';
 import { ForgotPassword } from './interfaces/forgot-password.interface';
 import { User } from './interfaces/user.interface';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,7 @@ export class UserService {
         @InjectModel('User') private readonly userModel: Model<User>,
         @InjectModel('ForgotPassword') private readonly forgotPasswordModel: Model<ForgotPassword>,
         private readonly authService: AuthService,
+        private readonly mailService: MailService,
         ) {}
 
     // create user
@@ -33,13 +35,14 @@ export class UserService {
         const user = new this.userModel(createUserDto);
         await this.isEmailUnique(user.email);
         this.setRegistrationInfo(user);
+        await this.mailService.sendVerificationMail(user.email, user.fullName)
         await user.save();
         return this.buildRegistrationInfo(user);
     }
 
     //veryfy email
-    async verifyEmail(req: Request, verifyUuidDto: VerifyUuidDto) {
-        const user = await this.findByVerification(verifyUuidDto.verification);
+    async verifyEmail(req: Request, email: string) {
+        const user = await this.findByEmail(email);
         await this.setUserAsVerified(user);
         return {
             fullName: user.fullName,
@@ -150,8 +153,8 @@ export class UserService {
     }
 
     // find a user by email
-    private async findByEmail(email: string): Promise<User> {
-        const user = await this.userModel.findOne({email, verified: true});
+    async findByEmail(email: string): Promise<User> {
+        const user = await this.userModel.findOne({email});
         if (!user) {
             throw new NotFoundException('Email not found.');
         }
@@ -159,7 +162,7 @@ export class UserService {
     }
 
     // set a user as verified
-    private async setUserAsVerified(user) {
+    async setUserAsVerified(user) {
         user.verified = true;
         await user.save();
     }
