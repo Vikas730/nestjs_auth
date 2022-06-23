@@ -37,6 +37,7 @@
     "ejs": "^3.1.8",
     "handlebars": "^4.7.7",
     "mongoose": "^5.6.4",
+    "nestjs-twilio": "^2.2.1",
     "nodemailer": "^6.7.5",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
@@ -46,6 +47,7 @@
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
     "swagger-ui-express": "^4.0.7",
+    "twilio": "^3.77.3",
     "uuid": "^3.3.2",
     "validator": "^11.1.0"
   },

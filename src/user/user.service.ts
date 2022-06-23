@@ -52,6 +52,16 @@ export class UserService {
         };
     }
 
+    //veryfy phone number
+    async verifyPhone(phone: string) {
+        const user = await this.findByPhone(phone);
+        await this.setUserPhoneAsVerified(user);
+        return {
+            fullName: user.fullName,
+            phone: user.phoneNumber,
+        };
+    }
+
     //login
     async login(req: Request, loginUserDto: LoginUserDto) {
         const verify = await this.varifiedUser(loginUserDto.email);
@@ -143,7 +153,7 @@ export class UserService {
         return userRegistrationInfo;
     }
 
-    // find a user by its uuid
+    // find a user by its verification
     private async findByVerification(verification: string): Promise<User> {
         const user = await this.userModel.findOne({verification, verified: false, verificationExpires: {$gt: new Date()}});
         if (!user) {
@@ -159,6 +169,21 @@ export class UserService {
             throw new NotFoundException('Email not found.');
         }
         return user;
+    }
+
+    // find a user by phone
+    async findByPhone(phoneNumber:string):Promise<User> {
+        const user = await this.userModel.findOne({phoneNumber});        
+        if(!user){
+            throw new BadRequestException('Phone number not found')
+        }
+        return user;
+    }
+
+    //
+    async setUserPhoneAsVerified(user){
+        user.phoneVerified = true;
+        await user.save();
     }
 
     // set a user as verified
@@ -237,7 +262,7 @@ export class UserService {
         await forgotPassword.save();
     }
 
-    //find user for forgot password by uuid
+    //find user for forgot password by verification field
     private async findForgotPasswordByUuid(verifyUuidDto: VerifyUuidDto): Promise<ForgotPassword> {
         const forgotPassword = await this.forgotPasswordModel.findOne({
             verification: verifyUuidDto.verification,

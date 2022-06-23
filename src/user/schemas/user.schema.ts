@@ -23,6 +23,13 @@ export const UserSchema = new mongoose.Schema ({
         maxlength: 1024,
         required: [true, 'PASSWORD_IS_BLANK'],
     },
+    phoneNumber: {
+        type: String,
+    },
+    phoneVerified: {
+        type: Boolean,
+        default: false
+    },
     roles: {
         type: [String],
         default: ['user'],

@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString } from 'class-validator';
+import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsString, Matches } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
@@ -47,4 +47,9 @@ export class CreateUserDto {
     @MinLength(5)
     @MaxLength(1024)
     readonly password: string;
+
+    @ApiModelProperty()
+    @IsNotEmpty()
+    @Matches(/^\+[1-9]\d{1,14}$/)
+    readonly phoneNumber: string;
   }

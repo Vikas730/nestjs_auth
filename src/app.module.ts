@@ -6,9 +6,10 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 import { MailModule } from './mail/mail.module';
+import { SmsModule } from './sms/sms.module';
 @Module({
   imports: [MongooseModule.forRoot(process.env.MONGODB_URL, {
-    dbName: process.env.MONGO_DB_NAME,}), UserModule, AuthModule, ArticleModule, MailModule],
+    dbName: process.env.MONGO_DB_NAME,}), UserModule, AuthModule, ArticleModule, MailModule, SmsModule],
   controllers: [AppController],
   providers: [AppService],
 })
