@@ -48,6 +48,12 @@ export class CreateUserDto {
     @MaxLength(1024)
     readonly password: string;
 
+    //phone number
+    @ApiModelProperty({
+      example: 'your phone no with country code i.e. +91 or +1 etc.',
+      description: 'The phone no of the User',
+      format: 'string'
+    })
     @ApiModelProperty()
     @IsNotEmpty()
     @Matches(/^\+[1-9]\d{1,14}$/)
